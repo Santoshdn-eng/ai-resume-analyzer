@@ -1,0 +1,98 @@
+[
+  {
+    "id": "job-001",
+    "title": "Machine Learning Engineer",
+    "company": "Northwind AI",
+    "location": "Bengaluru, IN (Hybrid)",
+    "description": "Build and deploy computer vision and NLP models into production. Own the full lifecycle from data pipeline to model serving.",
+    "required_skills": ["Python", "PyTorch", "Computer Vision", "OpenCV", "Docker", "Flask", "REST API"]
+  },
+  {
+    "id": "job-002",
+    "title": "AI/ML Engineer Intern",
+    "company": "Anthropic",
+    "location": "Remote",
+    "description": "Support applied ML projects, run experiments, and help productionize research prototypes with strong software engineering practices.",
+    "required_skills": ["Python", "Machine Learning", "PyTorch", "TensorFlow", "Git", "Testing"]
+  },
+  {
+    "id": "job-003",
+    "title": "Computer Vision Engineer",
+    "company": "SafeStreet Systems",
+    "location": "Guwahati, IN (On-site)",
+    "description": "Design real-time anomaly and object detection systems for public safety camera networks using YOLO-family models.",
+    "required_skills": ["Python", "YOLO", "OpenCV", "Computer Vision", "Docker", "AWS"]
+  },
+  {
+    "id": "job-004",
+    "title": "Backend Engineer (Python)",
+    "company": "Meridian Cloud",
+    "location": "Remote",
+    "description": "Build and scale REST APIs and microservices powering our data platform. Own service reliability and CI/CD pipelines.",
+    "required_skills": ["Python", "Flask", "Django", "REST API", "Docker", "PostgreSQL", "CI/CD"]
+  },
+  {
+    "id": "job-005",
+    "title": "Full Stack Developer",
+    "company": "Ferrous Labs",
+    "location": "Pune, IN (Hybrid)",
+    "description": "Ship end-to-end features across a React frontend and a Node/Flask backend, with a focus on clean, testable code.",
+    "required_skills": ["React.js", "JavaScript", "Flask", "REST API", "MongoDB", "Git"]
+  },
+  {
+    "id": "job-006",
+    "title": "NLP Engineer",
+    "company": "Lexicon Labs",
+    "location": "Remote",
+    "description": "Work on document understanding, entity extraction, and semantic search systems powering enterprise search products.",
+    "required_skills": ["Python", "NLP", "spaCy", "Hugging Face", "Transformers", "Sentence Transformers"]
+  },
+  {
+    "id": "job-007",
+    "title": "Data Engineer",
+    "company": "Riverstone Analytics",
+    "location": "Hyderabad, IN (On-site)",
+    "description": "Build reliable ETL pipelines and data models to support analytics and ML workloads at scale.",
+    "required_skills": ["Python", "PySpark", "SQL", "Airflow", "AWS", "ETL"]
+  },
+  {
+    "id": "job-008",
+    "title": "MLOps Engineer",
+    "company": "Vantage Systems",
+    "location": "Remote",
+    "description": "Own the ML infrastructure: model registries, CI/CD for models, containerized deployments, and monitoring.",
+    "required_skills": ["Docker", "Kubernetes", "CI/CD", "AWS", "Python", "GitHub Actions"]
+  },
+  {
+    "id": "job-009",
+    "title": "Software Engineer, Applied AI",
+    "company": "Beacon Robotics",
+    "location": "Bengaluru, IN (On-site)",
+    "description": "Integrate perception models into robotics products; bridge research code and production-grade C++/Python services.",
+    "required_skills": ["Python", "C++", "Deep Learning", "Computer Vision", "Linux", "Git"]
+  },
+  {
+    "id": "job-010",
+    "title": "Junior Data Scientist",
+    "company": "Cobalt Insights",
+    "location": "Remote",
+    "description": "Analyze large datasets, build predictive models, and communicate findings to stakeholders through clear visualizations.",
+    "required_skills": ["Python", "Pandas", "NumPy", "Scikit-learn", "Data Visualization", "SQL"]
+  },
+  {
+    "id": "job-011",
+    "title": "Cloud & DevOps Engineer",
+    "company": "Zenith Infra",
+    "location": "Noida, IN (Hybrid)",
+    "description": "Manage cloud infrastructure and deployment pipelines across AWS/GCP for a fast-growing SaaS platform.",
+    "required_skills": ["AWS", "GCP", "Docker", "Kubernetes", "Terraform", "CI/CD", "Linux"]
+  },
+  {
+    "id": "job-012",
+    "title": "Research Assistant, Applied ML",
+    "company": "IIT Guwahati AI Lab",
+    "location": "Guwahati, IN (On-site)",
+    "description": "Assist in applied research on anomaly detection and video understanding, with a path to co-authored publications.",
+    "required_skills": ["Python", "PyTorch", "Computer Vision", "OpenCV", "Deep Learning"]
+  }
+]
