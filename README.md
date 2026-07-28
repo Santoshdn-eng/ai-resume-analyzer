@@ -1,8 +1,11 @@
 # 🚀 AI Resume Analyser & Job Match Platform
 
+> 🌐 **Live Interactive Public Demo**: [https://ai-resume-analyzer-hjcp.onrender.com](https://ai-resume-analyzer-hjcp.onrender.com)
+
 A full-stack, enterprise-grade AI application for resume parsing, automated ATS score optimization, machine learning recruiter decision prediction, real-time live job searching, and interactive AI resume consulting.
 
 ---
+
 
 ## 🌟 Key Features
 
