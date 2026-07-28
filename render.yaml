@@ -2,7 +2,7 @@ services:
   - type: web
     name: ai-resume-analyzer
     env: python
-    buildCommand: "bash setup.sh"
+    buildCommand: "pip install --upgrade pip setuptools wheel && pip install -r backend/requirements.txt && python -m spacy download en_core_web_sm || true"
     startCommand: "gunicorn --chdir backend -w 2 -b 0.0.0.0:$PORT app:app"
     envVars:
       - key: PORT

@@ -39,7 +39,12 @@ app.config["MAX_CONTENT_LENGTH"] = MAX_CONTENT_LENGTH
 
 # Load ML Models once at startup
 print("Loading spaCy model...")
-nlp = spacy.load("en_core_web_sm")
+try:
+    nlp = spacy.load("en_core_web_sm")
+except Exception as e:
+    print(f"spaCy model load fallback: {e}")
+    nlp = None
+
 
 print("Loading sentence-transformers & job dataset...")
 matcher = JobMatcher(JOBS_PATH)

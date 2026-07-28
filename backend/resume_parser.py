@@ -111,16 +111,21 @@ def extract_name(text: str, nlp) -> str:
             if all(w.replace(".", "").isalpha() for w in words):
                 return " ".join([w.capitalize() for w in words])
 
-    # Fallback to spaCy NER
-    header = text[:300]
-    doc = nlp(header)
-    people = [ent.text for ent in doc.ents if ent.label_ == "PERSON"]
-    if people:
-        clean_p = re.sub(r"[•▌|*#\-]", "", people[0]).strip()
-        if len(clean_p.split()) <= 4:
-            return clean_p.title()
+    # Fallback to spaCy NER if available
+    if nlp is not None:
+        try:
+            header = text[:300]
+            doc = nlp(header)
+            people = [ent.text for ent in doc.ents if ent.label_ == "PERSON"]
+            if people:
+                clean_p = re.sub(r"[•▌|*#\-]", "", people[0]).strip()
+                if len(clean_p.split()) <= 4:
+                    return clean_p.title()
+        except Exception:
+            pass
 
     return "Santosh Debnath"
+
 
 
 def extract_skills(text: str, skills_list=None) -> list:
