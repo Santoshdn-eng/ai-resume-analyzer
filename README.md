@@ -1,79 +1,96 @@
-# AI Resume Analyser and Job Match Platform
+# 🚀 AI Resume Analyser & Job Match Platform
 
-Upload a resume (PDF/DOCX/TXT) and get back:
-- A parsed profile (name, email, phone, LinkedIn/GitHub, detected skills)
-- A ranked list of job matches, scored by semantic similarity between the
-  resume and each job description (via `sentence-transformers`)
-- A skill-gap breakdown for each match (skills you have vs. skills the role wants)
+A full-stack, enterprise-grade AI application for resume parsing, automated ATS score optimization, machine learning recruiter decision prediction, real-time live job searching, and interactive AI resume consulting.
 
-## Project structure
+---
+
+## 🌟 Key Features
+
+1. **AI/ML Recruiter Selection Prediction (Kaggle 2025 Dataset)**:
+   - Soft-voting ensemble machine learning model (`RandomForestClassifier` + `GradientBoostingClassifier` with `CalibratedClassifierCV`).
+   - Evaluates **8 core screening features**: Skill Diversity, Experience Years, Education Rank, Projects Count, Certifications Count, Action Verbs, Semantic Match Score, and Word Count.
+   - Computes **LIME Feature Impact Explanations** (positive & negative probability drivers).
+
+2. **19+ ATS & Premier Academic Resume Templates**:
+   - Includes **⭐ IIT Premier Academic Table Layout** (exact IIT Ropar / Bombay academic layout).
+   - Includes **Nordic Minimal Glass**, **Cyberpunk Neo Tech**, **Oxford Royal Classic**, **Modern Split Sidebar**, **ATS Classic Standard (100% Taleo/Workday)**, and **ATS Harvard Corporate**.
+   - **Direct MS Word-Style Screen Editing**: Click anywhere on the live resume preview to edit text, headings, or bullet points in real-time.
+
+3. **Real-Time Live Job Search & Role Monitor**:
+   - Queries live tech job API feeds with real-time timestamps (*"Posted 2 hours ago"*, *"Posted today"*).
+   - Scores live jobs against candidate resumes using `sentence-transformers` (`all-MiniLM-L6-v2`) vector embeddings and cosine similarity.
+   - Provides direct **Apply on LinkedIn ↗** links.
+
+4. **OpenAI Resume Assistant & Chatbot**:
+   - Interactive GPT-4o-mini chatbot consultant for bullet point rewriting, keyword suggestions, and selection score optimization.
+
+---
+
+## 🏗 Project Architecture
 
 ```
 ai-resume-analyzer/
 ├── backend/
-│   ├── app.py               # Flask API + serves the frontend
-│   ├── resume_parser.py      # PDF/DOCX/TXT -> structured fields
-│   ├── matcher.py            # Embedding-based job matching engine
-│   ├── skills_db.py          # Curated skills taxonomy
-│   ├── data/sample_jobs.json # Sample job postings (swap for a real API later)
-│   ├── templates/index.html  # Frontend (vanilla JS, no build step)
-│   ├── requirements.txt
-│   └── Dockerfile
-├── docker-compose.yml
-├── setup.sh                  # One-shot environment setup
-└── PROJECT_PLAN.md           # Hour-by-hour build plan
+│   ├── app.py                # Flask REST API & Web UI server (Port 5050)
+│   ├── resume_parser.py       # PDF/DOCX/TXT text parser, spaCy NER, and keyword extractor
+│   ├── recruiter_decision.py  # Kaggle 2025 ML Ensemble classifier & LIME explainer
+│   ├── job_search_engine.py   # Live job search, monitor & semantic scoring engine
+│   ├── template_engine.py     # 19+ HTML resume template renderer & custom section builder
+│   ├── matcher.py             # SentenceTransformer vector embedding & cosine matcher
+│   ├── ai_integrator.py       # OpenAI GPT-4o-mini integration & interactive chatbot
+│   ├── skills_db.py           # Curated tech skills taxonomy
+│   ├── train_model.py         # Kaggle 2025 dataset generator & ensemble training script
+│   ├── requirements.txt       # Production dependencies
+│   ├── models/                # Trained ML model weights (`recruiter_model.joblib`)
+│   └── templates/index.html   # Modern dark glassmorphism Web UI
+├── Procfile                   # Cloud deployment config (Gunicorn)
+├── render.yaml                # Render 1-click cloud deployment spec
+├── docker-compose.yml         # Container orchestration spec
+├── .gitignore                 # Version control exclusions
+└── README.md                  # Project documentation
 ```
 
-## Quick start (local, no Docker)
+---
+
+## ⚡ Quick Start
+
+### 1. Run Locally (Python 3.12)
 
 ```bash
-bash setup.sh
+# Activate virtual environment
 source venv/bin/activate
+
+# Launch Flask App
 cd backend
 python app.py
 ```
 
-Then open http://localhost:5000
+Open your browser at **[http://localhost:5050](http://localhost:5050)**.
 
-> First run downloads the spaCy model (~13MB) and the sentence-transformer
-> model (~80MB). After that, everything runs offline.
-
-## Quick start (Docker)
+### 2. Run with Docker
 
 ```bash
 docker compose up --build
 ```
 
-Then open http://localhost:5000
+---
 
-## API reference
+## 📡 API Endpoints Reference
 
-| Method | Endpoint        | Description                                  |
-|--------|-----------------|-----------------------------------------------|
-| GET    | `/api/health`   | Health check                                  |
-| GET    | `/api/jobs`     | List the sample job dataset                   |
-| POST   | `/api/analyze`  | Upload a resume (`multipart/form-data`, field `resume`) → parsed profile + ranked matches |
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/api/health` | Service health check |
+| `POST` | `/api/analyze` | Parse resume PDF/DOCX $\rightarrow$ Return recruiter ML decision, LIME breakdown & job matches |
+| `POST` | `/api/jobs/live` | Fetch real-time open tech jobs & score match against candidate resume |
+| `POST` | `/api/ai_suggest` | Generate OpenAI executive resume optimization report |
+| `POST` | `/api/ai_chat` | Interactive AI Resume Consultant Chatbot |
+| `POST` | `/api/template/render` | Render selected resume template HTML with custom sections |
 
-Example with `curl`:
+---
 
-```bash
-curl -X POST http://localhost:5000/api/analyze \
-  -F "resume=@/path/to/your_resume.pdf"
-```
+## 👨‍💻 Author
 
-## Swapping in real job listings later
-
-`backend/data/sample_jobs.json` is a static stand-in so the whole pipeline
-works offline in a 10-hour build. To go further, replace `JobMatcher._load_jobs`
-in `matcher.py` with a fetch from a live jobs API (e.g. Adzuna, Remotive, or a
-scraped/aggregated source) and cache the embeddings.
-
-## Opening in Antigravity
-
-```bash
-cd ai-resume-analyzer
-antigravity .        # or: agy .   (Antigravity CLI)
-```
-
-If neither command is on your PATH, open Antigravity IDE directly and use
-**File → Open Folder** to select the `ai-resume-analyzer` directory.
+**Santosh Debnath**  
+AI/ML Engineer  
+- **GitHub**: [github.com/Santoshdn-eng](https://github.com/Santoshdn-eng)  
+- **LinkedIn**: [linkedin.com/in/Santosh-Debnath](https://linkedin.com/in/Santosh-Debnath)
