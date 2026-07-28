@@ -3,7 +3,4 @@ services:
     name: ai-resume-analyzer
     env: python
     buildCommand: "pip install --upgrade pip setuptools wheel && pip install -r backend/requirements.txt && python -m spacy download en_core_web_sm || true"
-    startCommand: "gunicorn --chdir backend -w 2 -b 0.0.0.0:$PORT app:app"
-    envVars:
-      - key: PORT
-        value: 5050
+    startCommand: "gunicorn --chdir backend -w 1 --threads 4 --timeout 120 -b 0.0.0.0:$PORT app:app"
