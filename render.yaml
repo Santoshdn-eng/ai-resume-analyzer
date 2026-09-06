@@ -2,5 +2,6 @@ services:
   - type: web
     name: ai-resume-analyzer
     env: python
-    buildCommand: "pip install -r requirements.txt"
-    startCommand: "gunicorn -w 1 --threads 4 --timeout 120 app:app"
+    buildCommand: "python -m pip install --upgrade pip setuptools wheel && pip install --prefer-binary -r requirements.txt"
+    startCommand: "gunicorn --bind 0.0.0.0:$PORT -w 1 --threads 4 --timeout 120 app:app"
+
