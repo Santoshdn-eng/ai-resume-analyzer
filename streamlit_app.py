@@ -156,6 +156,7 @@ st.markdown("---")
 # Extract Text from File or Manual Input
 resume_text = ""
 file_name = "Manual Input"
+parsed = {}
 
 if uploaded_file is not None:
     file_name = uploaded_file.name
@@ -165,15 +166,19 @@ if uploaded_file is not None:
     with open(temp_path, "wb") as f:
         f.write(uploaded_file.getbuffer())
     
-    parsed = parse_resume(temp_path)
-    resume_text = parsed.get("cleaned_text", "")
+    try:
+        parsed = parse_resume(temp_path)
+        resume_text = parsed.get("cleaned_text") or parsed.get("raw_text", "")
+    except Exception as e:
+        st.error(f"❌ Error parsing file '{uploaded_file.name}': {str(e)}")
 elif manual_text.strip():
     parsed = {
         "cleaned_text": manual_text,
+        "raw_text": manual_text,
         "word_count": len(manual_text.split()),
         "skills": extract_skills(manual_text),
         "contact_info": extract_contact_info(manual_text),
-        "action_verbs_count": sum(1 for verb in ["developed", "built", "managed", "designed", "architected", "deployed", "optimized", "implemented", "created", "led"] if verb in manual_text.lower()),
+        "action_verb_count": sum(1 for verb in ["developed", "built", "managed", "designed", "architected", "deployed", "optimized", "implemented", "created", "led"] if verb in manual_text.lower()),
         "experience_years": 3.0,
         "education": "Bachelor"
     }
@@ -211,10 +216,11 @@ if not resume_text:
         """
         parsed = {
             "cleaned_text": demo_text,
+            "raw_text": demo_text,
             "word_count": len(demo_text.split()),
             "skills": ["Python", "PyTorch", "TensorFlow", "Docker", "Kubernetes", "SQL", "PostgreSQL", "FastAPI", "Flask", "AWS", "GCP", "Git", "OpenCV", "NLP", "Spark", "Redis"],
             "contact_info": {"name": "Alex Johnson", "email": "alex.johnson@example.com", "phone": "+1-555-0199"},
-            "action_verbs_count": 12,
+            "action_verb_count": 12,
             "experience_years": 6.0,
             "education": "PhD"
         }
@@ -230,9 +236,10 @@ if resume_text:
     skills_list = parsed.get("skills", extract_skills(resume_text))
     exp_years = float(parsed.get("experience_years", 3.0))
     word_count = int(parsed.get("word_count", len(resume_text.split())))
-    action_verbs = int(parsed.get("action_verbs_count", 6))
-    edu_str = parsed.get("education", "Bachelor")
-    edu_rank = 3 if "phd" in str(edu_str).lower() else (2 if "master" in str(edu_str).lower() or "bachelor" in str(edu_str).lower() else 1)
+    action_verbs = int(parsed.get("action_verb_count", parsed.get("action_verbs_count", 6)))
+    edu_rank = int(parsed.get("edu_rank", 2))
+    projects_count = int(parsed.get("projects_count", 3))
+    certifications_count = int(parsed.get("certifications_count", 1))
     
     decision_res = recruiter_engine.predict(
         skill_count=len(skills_list),
@@ -241,8 +248,8 @@ if resume_text:
         action_verbs=action_verbs,
         word_count=word_count,
         edu_rank=edu_rank,
-        projects_count=4,
-        certifications_count=2
+        projects_count=projects_count,
+        certifications_count=certifications_count
     )
 
     # CREATE MAIN DASHBOARD TABS

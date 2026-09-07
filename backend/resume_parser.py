@@ -192,7 +192,7 @@ def estimate_experience_years(text: str) -> float:
         return float(exp_match.group(1))
 
     return 2.0
-def parse_resume(file_path: str, nlp) -> dict:
+def parse_resume(file_path: str, nlp=None) -> dict:
     """Full pipeline: file -> structured dict."""
     text = extract_text(file_path)
     if not text.strip():
@@ -206,7 +206,6 @@ def parse_resume(file_path: str, nlp) -> dict:
     extraction = extract_headings_and_keywords(text)
 
     # Education Rank
-
     text_lower = text.lower()
     if "phd" in text_lower or "doctorate" in text_lower:
         edu_rank = 3
@@ -237,6 +236,8 @@ def parse_resume(file_path: str, nlp) -> dict:
         "core_keywords": extraction["core_keywords"],
         "key_highlights": extraction["key_highlights"],
         "raw_text": text,
+        "cleaned_text": text,
         "word_count": len(text.split()),
     }
+
 
