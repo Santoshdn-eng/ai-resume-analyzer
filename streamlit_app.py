@@ -228,18 +228,26 @@ if not resume_text:
 
 # If Resume Data Available, Run Analysis
 if resume_text:
-    # Run Matcher Score
-    matcher_res = matcher.match(resume_text, target_role)
-    semantic_match_score = float(matcher_res.get("match_score", 75.0))
+    skills_list = parsed.get("skills") if (isinstance(parsed, dict) and parsed.get("skills")) else extract_skills(resume_text)
+    
+    # Run Matcher Score (matched_jobs is a list of job match dicts)
+    matched_jobs = matcher.match(resume_text, skills_list, top_n=6)
+    semantic_match_score = float(matched_jobs[0]["score"]) if matched_jobs else 75.0
+    
+    # Missing skills across matched jobs
+    missing_skills = []
+    if matched_jobs:
+        for j in matched_jobs:
+            missing_skills.extend(j.get("missing_skills", []))
+    missing_skills = sorted(set(missing_skills))
     
     # Run Recruiter Decision Engine
-    skills_list = parsed.get("skills", extract_skills(resume_text))
-    exp_years = float(parsed.get("experience_years", 3.0))
-    word_count = int(parsed.get("word_count", len(resume_text.split())))
-    action_verbs = int(parsed.get("action_verb_count", parsed.get("action_verbs_count", 6)))
-    edu_rank = int(parsed.get("edu_rank", 2))
-    projects_count = int(parsed.get("projects_count", 3))
-    certifications_count = int(parsed.get("certifications_count", 1))
+    exp_years = float(parsed.get("experience_years", 3.0)) if isinstance(parsed, dict) else 3.0
+    word_count = int(parsed.get("word_count", len(resume_text.split()))) if isinstance(parsed, dict) else len(resume_text.split())
+    action_verbs = int(parsed.get("action_verb_count", parsed.get("action_verbs_count", 6))) if isinstance(parsed, dict) else 6
+    edu_rank = int(parsed.get("edu_rank", 2)) if isinstance(parsed, dict) else 2
+    projects_count = int(parsed.get("projects_count", 3)) if isinstance(parsed, dict) else 3
+    certifications_count = int(parsed.get("certifications_count", 1)) if isinstance(parsed, dict) else 1
     
     decision_res = recruiter_engine.predict(
         skill_count=len(skills_list),
@@ -368,7 +376,6 @@ if resume_text:
                 
         with col_s2:
             st.markdown(f"#### ⚠️ Missing Recommended Skills for {target_role}")
-            missing_skills = matcher_res.get("missing_skills", ["PyTorch", "Kubernetes", "AWS", "MLOps", "Spark"])
             if missing_skills:
                 missing_html = " ".join([f"<span class='badge-negative'>{s}</span>" for s in missing_skills])
                 st.markdown(missing_html, unsafe_allow_html=True)
@@ -378,13 +385,14 @@ if resume_text:
     # --- TAB 3: JOB MATCH ENGINE ---
     with tab3:
         st.subheader("🎯 Semantic Vector Embedding Job Matcher")
-        st.markdown(f"**Target Role**: `{target_role}` | **Semantic Match Score**: `{semantic_match_score:.1f}%`")
+        st.markdown(f"**Target Role**: `{target_role}` | **Top Semantic Match Score**: `{semantic_match_score:.1f}%`")
         
-        matched_jobs = matcher_res.get("matched_jobs", [
-            {"title": "Senior ML Engineer", "company": "TechCorp AI", "score": 92.5, "location": "San Francisco, CA"},
-            {"title": "Backend AI Developer", "company": "CloudScale", "score": 84.0, "location": "Remote"},
-            {"title": "Data Scientist - NLP", "company": "DataMind", "score": 78.2, "location": "New York, NY"}
-        ])
+        if not matched_jobs:
+            matched_jobs = [
+                {"title": "Senior ML Engineer", "company": "TechCorp AI", "score": 92.5, "location": "San Francisco, CA"},
+                {"title": "Backend AI Developer", "company": "CloudScale", "score": 84.0, "location": "Remote"},
+                {"title": "Data Scientist - NLP", "company": "DataMind", "score": 78.2, "location": "New York, NY"}
+            ]
         
         for job in matched_jobs:
             score = job.get("score", 80.0)
